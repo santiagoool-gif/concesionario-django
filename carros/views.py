@@ -46,12 +46,7 @@ def comprar(request, carro_id):
 
 
 def carros_nube(request):
-    respuesta = requests.get("http://127.0.0.1:5000/carros")
-
+    respuesta = requests.get("https://microservicio-carros.onrender.com/carros")
     carros = respuesta.json()
-
-    context = {
-        "carros": carros,
-    }
-
+    context = {"carros": carros}
     return render(request, "carros/nube.html", context)
