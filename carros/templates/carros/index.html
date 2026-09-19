@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Concesionario</title>
+</head>
+
+<body>
+
+    <h1>Concesionario</h1>
+
+    <h2>Últimos carros registrados</h2>
+
+    {% if latest_carro_list %}
+
+        <ul>
+        {% for carro in latest_carro_list %}
+            <li>{{ carro.carro_text }}</li>
+        {% endfor %}
+        </ul>
+
+    {% else %}
+
+        <p>No hay carros registrados.</p>
+
+    {% endif %}
+
+</body>
+</html>

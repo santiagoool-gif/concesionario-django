@@ -1,35 +1,57 @@
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
 from .models import Carro, Caracteristica
+import requests
 
 
 def index(request):
     latest_carro_list = Carro.objects.order_by("-pub_date")[:4]
 
-    texto = "<h1>Concesionario</h1>"
-    texto += "<h2>Últimos carros registrados</h2>"
+    context = {
+        "latest_carro_list": latest_carro_list,
+    }
 
-    for carro in latest_carro_list:
-        texto += f"<p>🚗 {carro.carro_text}</p>"
-
-    return HttpResponse(texto)
+    return render(request, "carros/index.html", context)
 
 
 def detail(request, carro_id):
-    carro = Carro.objects.get(pk=carro_id)
-    return HttpResponse(f"Estás viendo el carro: {carro}")
+    carro = get_object_or_404(Carro, pk=carro_id)
+
+    context = {
+        "carro": carro,
+    }
+
+    return render(request, "carros/detail.html", context)
 
 
 def results(request, carro_id):
-    carro = Carro.objects.get(pk=carro_id)
+    carro = get_object_or_404(Carro, pk=carro_id)
     caracteristicas = carro.caracteristica_set.all()
 
-    texto = f"<h1>Resultados: {carro.carro_text}</h1>"
+    context = {
+        "carro": carro,
+        "caracteristicas": caracteristicas,
+    }
 
-    for caracteristica in caracteristicas:
-        texto += f"<p>{caracteristica.caracteristica_text} - Votos: {caracteristica.votos}</p>"
-
-    return HttpResponse(texto)
+    return render(request, "carros/results.html", context)
 
 
-def vote(request, carro_id):
-    return HttpResponse(f"Estás votando por el carro {carro_id}.")
+def comprar(request, carro_id):
+    carro = get_object_or_404(Carro, pk=carro_id)
+
+    context = {
+        "carro": carro,
+    }
+
+    return render(request, "carros/detail.html", context)
+
+
+def carros_nube(request):
+    respuesta = requests.get("http://127.0.0.1:5000/carros")
+
+    carros = respuesta.json()
+
+    context = {
+        "carros": carros,
+    }
+
+    return render(request, "carros/nube.html", context)

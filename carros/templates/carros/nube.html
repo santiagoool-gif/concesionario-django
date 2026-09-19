@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vehículos en la nube</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f4f6f8;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header p {
+            color: #cbd5e1;
+        }
+
+        .contenedor {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .carros {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+        }
+
+        .icono {
+            font-size: 45px;
+        }
+
+        .card h2 {
+            color: #111827;
+        }
+
+        .dato {
+            color: #555;
+        }
+
+        .precio {
+            font-size: 22px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .disponible {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .no-disponible {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🚗 Concesionario</h1>
+        <p>Vehículos disponibles desde nuestro inventario en la nube</p>
+    </header>
+
+    <div class="contenedor">
+
+        <div class="carros">
+
+            {% for carro in carros %}
+
+            <div class="card">
+
+                <div class="icono">🚘</div>
+
+                <h2>{{ carro.marca }} {{ carro.modelo }}</h2>
+
+                <p class="dato">
+                    <strong>Año:</strong> {{ carro.anio }}
+                </p>
+
+                <p class="precio">
+                    ${{ carro.precio }}
+                </p>
+
+                {% if carro.disponible %}
+                    <span class="disponible">
+                        Disponible
+                    </span>
+                {% else %}
+                    <span class="no-disponible">
+                        No disponible
+                    </span>
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
