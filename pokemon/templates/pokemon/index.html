@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pokédex</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e8f1f8, #ffffff);
+            color: #1f2937;
+        }
+
+        .header {
+            background: #202b38;
+            color: white;
+            padding: 20px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .subtitulo {
+            color: #dbe4ec;
+            font-size: 15px;
+        }
+
+        .contenedor {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .titulo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .titulo h1 {
+            font-size: 45px;
+            margin-bottom: 10px;
+            color: #d32f2f;
+        }
+
+        .titulo p {
+            font-size: 18px;
+            color: #64748b;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .tarjeta {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        .numero {
+            color: #94a3b8;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .imagen {
+            width: 160px;
+            height: 160px;
+            margin: 10px auto;
+            background: #f1f5f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .imagen img {
+            width: 130px;
+        }
+
+        .nombre {
+            font-size: 25px;
+            margin: 15px 0;
+            text-transform: capitalize;
+        }
+
+        .boton {
+            display: inline-block;
+            text-decoration: none;
+            background: #ef5350;
+            color: white;
+            padding: 11px 25px;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .boton:hover {
+            background: #c62828;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            padding: 25px;
+            background: #202b38;
+            color: white;
+        }
+
+        @media (max-width: 800px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .header {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .titulo h1 {
+                font-size: 35px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div>
+            <div class="logo">🔴 Pokédex</div>
+            <div class="subtitulo">Explora nuestros Pokémon</div>
+        </div>
+    </header>
+
+    <main class="contenedor">
+
+        <div class="titulo">
+            <h1>Pokémon</h1>
+            <p>Selecciona un Pokémon para ver toda su información</p>
+        </div>
+
+        {% if pokemones %}
+
+            <div class="grid">
+
+                {% for pokemon in pokemones %}
+
+                    <div class="tarjeta">
+
+                        <div class="numero">
+                            #{{ pokemon.id }}
+                        </div>
+
+                        <div class="imagen">
+                            <img
+                                src="{{ pokemon.sprite }}"
+                                alt="{{ pokemon.nombre }}"
+                            >
+                        </div>
+
+                        <h2 class="nombre">
+                            {{ pokemon.nombre }}
+                        </h2>
+
+                        <a
+                            class="boton"
+                            href="{% url 'detalle' pokemon.nombre %}"
+                        >
+                            Ver información
+                        </a>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="tarjeta">
+                <h2>No hay Pokémon registrados</h2>
+            </div>
+
+        {% endif %}
+
+    </main>
+
+    <footer class="footer">
+        Pokédex | Proyecto realizado con Django
+    </footer>
+
+</body>
+</html>

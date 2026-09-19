@@ -50,3 +50,16 @@ def carros_nube(request):
     carros = respuesta.json()
     context = {"carros": carros}
     return render(request, "carros/nube.html", context)
+
+def carros_por_anio(request, anio):
+    respuesta = requests.get(
+        f"https://microservicio-carros.onrender.com/carros/{anio}"
+    )
+
+    carros = respuesta.json()
+
+    context = {
+        "carros": carros
+    }
+
+    return render(request, "carros/nube.html", context)

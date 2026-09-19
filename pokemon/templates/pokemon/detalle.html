@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ pokemon.nombre }} - Pokédex</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e8f1f8, #ffffff);
+            color: #1f2937;
+        }
+
+        .header {
+            background: #202b38;
+            color: white;
+            padding: 20px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .volver {
+            color: white;
+            text-decoration: none;
+            background: #ef5350;
+            padding: 10px 20px;
+            border-radius: 20px;
+        }
+
+        .contenedor {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .tarjeta {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .titulo {
+            background: linear-gradient(135deg, #ef5350, #d32f2f);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .titulo h1 {
+            margin: 0;
+            font-size: 42px;
+            text-transform: capitalize;
+        }
+
+        .contenido {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            padding: 50px;
+        }
+
+        .imagen {
+            width: 280px;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+            border-radius: 50%;
+        }
+
+        .imagen img {
+            width: 220px;
+            image-rendering: auto;
+        }
+
+        .informacion {
+            min-width: 300px;
+        }
+
+        .dato {
+            background: #f1f5f9;
+            margin: 15px 0;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 20px;
+        }
+
+        .habilidades {
+            margin-top: 25px;
+        }
+
+        .habilidades h2 {
+            color: #d32f2f;
+        }
+
+        .habilidad {
+            display: inline-block;
+            background: #ffd54f;
+            padding: 12px 20px;
+            margin: 5px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 25px;
+            background: #202b38;
+            color: white;
+        }
+
+        @media (max-width: 700px) {
+            .header {
+                padding: 20px;
+            }
+
+            .contenido {
+                flex-direction: column;
+                padding: 30px 20px;
+                gap: 30px;
+            }
+
+            .informacion {
+                min-width: auto;
+                width: 100%;
+            }
+
+            .imagen {
+                width: 220px;
+                height: 220px;
+            }
+
+            .imagen img {
+                width: 170px;
+            }
+
+            .titulo h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="logo">🔴 Pokédex</div>
+
+        <a class="volver" href="{% url 'index' %}">
+            ← Volver
+        </a>
+    </header>
+
+    <main class="contenedor">
+
+        <div class="tarjeta">
+
+            <div class="titulo">
+                <h1>{{ pokemon.nombre }}</h1>
+            </div>
+
+            <div class="contenido">
+
+                <div class="imagen">
+                    <img
+                        src="{{ pokemon.sprite }}"
+                        alt="{{ pokemon.nombre }}"
+                    >
+                </div>
+
+                <div class="informacion">
+
+                    <div class="dato">
+                        📏 <strong>Altura:</strong>
+                        {{ pokemon.altura }}
+                    </div>
+
+                    <div class="dato">
+                        ⚖️ <strong>Peso:</strong>
+                        {{ pokemon.peso }}
+                    </div>
+
+                    <div class="habilidades">
+
+                        <h2>⭐ Habilidades</h2>
+
+                        {% for habilidad in pokemon.habilidades %}
+                            <span class="habilidad">
+                                {{ habilidad }}
+                            </span>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        Pokédex | Proyecto realizado con Django
+    </footer>
+
+</body>
+</html>
