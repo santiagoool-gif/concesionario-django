@@ -1,7 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Carro, Caracteristica
 import requests
+import os
+from dotenv import load_dotenv
+from google import genai
 
+load_dotenv()
+
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 def index(request):
     latest_carro_list = Carro.objects.order_by("-pub_date")[:4]
@@ -63,3 +69,30 @@ def carros_por_anio(request, anio):
     }
 
     return render(request, "carros/nube.html", context)
+
+def ia_concesionario(request):
+    respuesta_ia = ""
+
+    if request.method == "POST":
+        pregunta = request.POST.get("pregunta")
+
+        if pregunta:
+            response = client.models.generate_content(
+               model="gemini-3.5-flash-lite",
+                contents=f"""
+                Eres un asistente virtual de un concesionario de vehículos.
+                Responde preguntas relacionadas con carros, características,
+                mantenimiento, compra, venta y funcionamiento de vehículos.
+
+                Pregunta del usuario:
+                {pregunta}
+                """
+            )
+
+            respuesta_ia = response.text
+
+    return render(
+        request,
+        "carros/asistente.html",
+        {"respuesta_ia": respuesta_ia}
+    )

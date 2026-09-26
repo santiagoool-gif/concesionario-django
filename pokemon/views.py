@@ -4,7 +4,9 @@ import requests
 
 
 def index(request):
-    respuesta = requests.get("http://127.0.0.1:5000/pokemon")
+    respuesta = requests.get(
+        "https://microservicio-pokemon.onrender.com/pokemon"
+    )
 
     pokemones = respuesta.json()
 
@@ -17,7 +19,7 @@ def index(request):
 
 def detalle(request, nombre):
     respuesta = requests.get(
-        f"http://127.0.0.1:5000/pokemon/{nombre}"
+        f"https://microservicio-pokemon.onrender.com/pokemon/{nombre}"
     )
 
     if respuesta.status_code == 404:
