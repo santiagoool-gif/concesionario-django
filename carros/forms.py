@@ -5,7 +5,7 @@ from .models import Carro, Caracteristica
 class CarroForm(forms.ModelForm):
     class Meta:
         model = Carro
-        fields = ["carro_text", "precio", "pub_date"]
+        fields = ["carro_text", "precio", "pub_date","anio"]
         widgets = {
             "carro_text": forms.TextInput(attrs={
                 "class": "form-control",
@@ -19,6 +19,10 @@ class CarroForm(forms.ModelForm):
             "pub_date": forms.DateTimeInput(attrs={
                 "class": "form-control",
                 "type": "datetime-local",
+            }),
+             "anio": forms.NumberInput(attrs={
+             "class": "form-control",
+                "placeholder": "Ej:  2020",
             }),
         }
         labels = {

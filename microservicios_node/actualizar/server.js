@@ -40,7 +40,11 @@ app.put("/carros/:id", async (req, res) => {
       req.body,
       { headers: { "X-Internal-Token": TOKEN }, timeout: 8000 }
     );
-    res.json({ microservicio: "node-actualizar", ...response.data });
+    res.json({ microservicio: "node-actualizar",
+      mensaje: "carros encontrados",
+      carros: response.data.carros
+    });
+    
   } catch (error) {
     const status = error.response?.status || 502;
     res.status(status).json({ error: "No se pudo actualizar el carro", detalle: error.response?.data || error.message });

@@ -14,9 +14,7 @@ from google import genai
 
 load_dotenv()
 
-# =========================================================
-# CONFIGURACION
-# =========================================================
+
 
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
@@ -40,9 +38,9 @@ def _usar_microservicio(url):
     return bool(url)
 
 
-# =========================================================
-# VISTAS TRADICIONALES
-# =========================================================
+
+# PRIMERAS 
+
 
 def index(request):
     latest_carro_list = Carro.objects.order_by("-pub_date")[:4]
@@ -62,12 +60,13 @@ def results(request, carro_id):
     return render(request, "carros/results.html", {
         "carro": carro,
         "caracteristicas": caracteristicas,
+        
     })
 
 
-# =========================================================
+
 # CRUD - LAS OPERACIONES PUEDEN PASAR POR NODE.JS
-# =========================================================
+
 
 def crear_carro(request):
     if request.method == "POST":
@@ -82,6 +81,7 @@ def crear_carro(request):
                             "carro_text": data["carro_text"],
                             "precio": str(data["precio"]),
                             "pub_date": data["pub_date"].isoformat(),
+                            "año": data["carro_text"],
                         },
                         timeout=10,
                     )
@@ -170,9 +170,8 @@ def eliminar_carro(request, carro_id):
     return render(request, "carros/confirmar_eliminar.html", {"carro": carro})
 
 
-# =========================================================
 # OTRAS VISTAS
-# =========================================================
+
 
 def comprar(request, carro_id):
     carro = get_object_or_404(Carro, pk=carro_id)
@@ -202,9 +201,9 @@ def carros_por_anio(request, anio):
     })
 
 
-# =========================================================
+
 # API PUBLICA DE DATOS
-# =========================================================
+
 
 def _datos_carros():
     carros = Carro.objects.all().order_by("-pub_date")
@@ -256,9 +255,9 @@ def api_carros_resiliente(request):
     })
 
 
-# =========================================================
+
 # API INTERNA PARA LOS MICROSERVICIOS NODE.JS
-# =========================================================
+
 
 def _token_valido(request):
     return request.headers.get("X-Internal-Token") == INTERNAL_API_TOKEN
@@ -317,9 +316,9 @@ def api_interno_eliminar(request, carro_id):
     return JsonResponse({"mensaje": "Carro eliminado", "id": carro_id})
 
 
-# =========================================================
+
 # CARACTERISTICAS
-# =========================================================
+
 
 def agregar_caracteristica(request, carro_id):
     carro = get_object_or_404(Carro, pk=carro_id)
@@ -363,9 +362,8 @@ def eliminar_caracteristica(request, caracteristica_id):
     })
 
 
-# =========================================================
 # ASISTENTE IA
-# =========================================================
+
 
 def ia_concesionario(request):
     respuesta = None
@@ -449,9 +447,9 @@ dilo claramente.
         }
     )
 
-# =========================================================
+
 # VISTAS GENERICAS DE DJANGO
-# =========================================================
+
 
 class CarroListView(ListView):
     model = Carro

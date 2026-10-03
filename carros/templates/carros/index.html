@@ -122,6 +122,13 @@
             box-shadow: 0 12px 30px rgba(16, 24, 40, 0.12);
         }
 
+        .car-year {
+          color: #2f6df6;
+          font-size: 15px;
+         font-weight: 700;
+         margin-bottom: 8px;
+}
+
         .car-icon {
             width: 55px;
             height: 55px;
@@ -293,6 +300,10 @@
                         <div class="car-name">
                             {{ carro.carro_text }}
                         </div>
+                        <div class="car-year">
+                          Año: {{ carro.anio }}
+                         </div>
+
 
                         <div class="car-date">
                             Publicado:
