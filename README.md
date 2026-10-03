@@ -125,7 +125,11 @@ El Blueprint crea:
 
 En Render: **New → Blueprint Instance → conectar el repositorio → Apply**.
 
-Después agrega `GEMINI_API_KEY` como variable secreta del servicio Django. Render también puede generar `SECRET_KEY` e `INTERNAL_API_TOKEN` automáticamente mediante el Blueprint.
+Después agrega `GEMINI_API_KEY` como variable secreta del servicio Django. Cuando el servicio termine de desplegar, puedes cargar los datos de demostración desde Render Shell con:
+
+```bash
+python manage.py loaddata carros/fixtures/initial_data.json
+``` Render también puede generar `SECRET_KEY` e `INTERNAL_API_TOKEN` automáticamente mediante el Blueprint.
 
 > El PostgreSQL gratuito de Render está pensado para pruebas y actualmente expira después de 30 días. Para una entrega académica de corto plazo funciona, pero si el proyecto debe permanecer disponible durante más tiempo conviene usar una base de datos externa con un plan gratuito que no tenga ese vencimiento.
 
