@@ -1,29 +1,145 @@
-{% extends "carros/base.html" %}
+<!DOCTYPE html>
+<html lang="es">
 
-{% block content %}
+<head>
 
-<div class="card">
+    <meta charset="UTF-8">
 
-    <h1>Agregar característica</h1>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <p>
-        <strong>{{ carro.carro_text }}</strong>
-    </p>
+    <title>Agregar característica</title>
 
-    <form method="post">
-        {% csrf_token %}
+    <style>
 
-        {{ form.as_p }}
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #172033;
+            margin: 0;
+        }
 
-        <button type="submit" class="btn">
-            Guardar característica
-        </button>
+        .container {
+            max-width: 600px;
+            margin: 80px auto;
+            padding: 20px;
+        }
 
-        <a href="{% url 'carros:detail' carro.id %}" class="btn btn-secondary">
-            Cancelar
-        </a>
-    </form>
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+        }
 
-</div>
+        h1 {
+            margin-bottom: 10px;
+        }
 
-{% endblock %}
+        .car {
+            color: #2f6df6;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"] {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 14px;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            background: white;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #2f6df6;
+            box-shadow: 0 0 0 3px rgba(47,109,246,0.15);
+        }
+
+        button,
+        a {
+            display: inline-block;
+            padding: 13px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        button {
+            background: #2f6df6;
+            color: white;
+        }
+
+        a {
+            background: #eef2f6;
+            color: #344054;
+            margin-left: 5px;
+        }
+
+        .error {
+            color: #d92d20;
+            margin-bottom: 15px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1>Agregar característica</h1>
+
+            <p class="car">
+                {{ carro.carro_text }}
+            </p>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <label for="id_caracteristica_text">
+                    Característica
+                </label>
+
+                <input
+                    type="text"
+                    id="id_caracteristica_text"
+                    name="caracteristica_text"
+                    maxlength="200"
+                    placeholder="Ejemplo: Motor 2.0, Caja automática, Techo panorámico..."
+                    required
+                >
+
+                <button type="submit">
+                    Guardar característica
+                </button>
+
+                <a href="{% url 'carros:detail' carro.id %}">
+                    Cancelar
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

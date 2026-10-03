@@ -29,15 +29,17 @@ class CarroForm(forms.ModelForm):
 
 
 class CaracteristicaForm(forms.ModelForm):
+    caracteristica_text = forms.CharField(
+        label="Característica",
+        max_length=200,
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Ejemplo: Motor 2.0, Caja automática, Techo panorámico..."
+            }
+        )
+    )
+
     class Meta:
         model = Caracteristica
         fields = ["caracteristica_text"]
-        widgets = {
-            "caracteristica_text": forms.TextInput(attrs={
-                "class": "form-control",
-                "placeholder": "Ej: Motor 2.0 Turbo",
-            })
-        }
-        labels = {
-            "caracteristica_text": "Característica",
-        }
