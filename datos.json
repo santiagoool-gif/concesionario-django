@@ -1,0 +1,135 @@
+[
+{
+  "model": "carros.carro",
+  "pk": 1,
+  "fields": {
+    "carro_text": "Audi A4",
+    "precio": "0.00",
+    "pub_date": "2026-08-29T13:08:42.395Z"
+  }
+},
+{
+  "model": "carros.carro",
+  "pk": 2,
+  "fields": {
+    "carro_text": "BMW 320i",
+    "precio": "0.00",
+    "pub_date": "2026-08-29T13:20:54.438Z"
+  }
+},
+{
+  "model": "carros.carro",
+  "pk": 3,
+  "fields": {
+    "carro_text": "Toyota Corolla",
+    "precio": "0.00",
+    "pub_date": "2026-08-29T13:35:36.719Z"
+  }
+},
+{
+  "model": "carros.carro",
+  "pk": 4,
+  "fields": {
+    "carro_text": "Mazda 3",
+    "precio": "60000000.00",
+    "pub_date": "2026-10-03T06:47:00Z"
+  }
+},
+{
+  "model": "carros.carro",
+  "pk": 5,
+  "fields": {
+    "carro_text": "Hyundai genesis 2017",
+    "precio": "4700000.00",
+    "pub_date": "2026-09-26T14:27:00Z"
+  }
+},
+{
+  "model": "carros.caracteristica",
+  "pk": 1,
+  "fields": {
+    "carro": 1,
+    "caracteristica_text": "Motor 2.0"
+  }
+},
+{
+  "model": "carros.caracteristica",
+  "pk": 2,
+  "fields": {
+    "carro": 1,
+    "caracteristica_text": "Caja automática"
+  }
+},
+{
+  "model": "carros.caracteristica",
+  "pk": 4,
+  "fields": {
+    "carro": 3,
+    "caracteristica_text": "Caja automática"
+  }
+},
+{
+  "model": "carros.caracteristica",
+  "pk": 5,
+  "fields": {
+    "carro": 3,
+    "caracteristica_text": "Techo panorámico"
+  }
+},
+{
+  "model": "carros.caracteristica",
+  "pk": 6,
+  "fields": {
+    "carro": 3,
+    "caracteristica_text": "Cámara de reversa"
+  }
+},
+{
+  "model": "carros.caracteristica",
+  "pk": 7,
+  "fields": {
+    "carro": 3,
+    "caracteristica_text": "Motor 2.0"
+  }
+},
+{
+  "model": "carros.caracteristica",
+  "pk": 8,
+  "fields": {
+    "carro": 5,
+    "caracteristica_text": "motor 2.0 turbo"
+  }
+},
+{
+  "model": "carros.caracteristica",
+  "pk": 9,
+  "fields": {
+    "carro": 5,
+    "caracteristica_text": "Caja Automatica"
+  }
+},
+{
+  "model": "clientes.cliente",
+  "pk": 1,
+  "fields": {
+    "nombre": "Santiago",
+    "edad": 21
+  }
+},
+{
+  "model": "clientes.cliente",
+  "pk": 2,
+  "fields": {
+    "nombre": "Carlos",
+    "edad": 25
+  }
+},
+{
+  "model": "clientes.cliente",
+  "pk": 3,
+  "fields": {
+    "nombre": "Laura",
+    "edad": 23
+  }
+}
+]
