@@ -7,6 +7,7 @@ from django.utils import timezone
 
 class Carro(models.Model):
     carro_text = models.CharField(max_length=200)
+    precio = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     pub_date = models.DateTimeField("fecha de publicación")
 
     def __str__(self):

@@ -1,14 +1,255 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Detalle del carro</title>
+    <meta charset="UTF-8">
+    <title>{{ carro.carro_text }} - Concesionario</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .inicio {
+            background: #2563eb;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .contenedor {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .tarjeta {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #111827;
+            margin-top: 0;
+        }
+
+        .datos {
+            margin: 15px 0;
+            font-size: 17px;
+        }
+
+        .acciones {
+            margin-top: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 16px;
+            border-radius: 7px;
+            text-decoration: none;
+            color: white;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .editar {
+            background: #2563eb;
+        }
+
+        .eliminar {
+            background: #dc2626;
+        }
+
+        .agregar {
+            background: #16a34a;
+        }
+
+        .caracteristica {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .texto-caracteristica {
+            font-size: 16px;
+        }
+
+        .botones-caracteristica {
+            white-space: nowrap;
+        }
+
+        .botones-caracteristica a {
+            text-decoration: none;
+            margin-left: 8px;
+        }
+
+        .editar-caracteristica {
+            color: #2563eb;
+        }
+
+        .eliminar-caracteristica {
+            color: #dc2626;
+        }
+
+        .sin-caracteristicas {
+            color: #6b7280;
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>{{ carro.carro_text }}</h1>
+<header>
 
-    <p>Fecha de publicación: {{ carro.pub_date }}</p>
+    <h1>CONCESIONARIO +</h1>
+
+    <a class="inicio" href="{% url 'carros:index' %}">
+        Inicio
+    </a>
+
+</header>
+
+
+<div class="contenedor">
+
+    <!-- INFORMACIÓN DEL CARRO -->
+
+    <div class="tarjeta">
+
+        <h2>🚗 {{ carro.carro_text }}</h2>
+
+        <div class="datos">
+            <strong>ID:</strong> {{ carro.id }}
+        </div>
+
+        <div class="datos">
+            <strong>Fecha de publicación:</strong>
+            {{ carro.pub_date }}
+        </div>
+
+        {% if carro.precio %}
+        <div class="datos">
+            <strong>Precio:</strong>
+            ${{ carro.precio }}
+        </div>
+        {% endif %}
+
+
+        <!-- ACCIONES DEL CARRO -->
+
+        <div class="acciones">
+
+            <a
+                class="btn editar"
+                href="{% url 'carros:editar' carro.id %}"
+            >
+                ✏️ Editar carro
+            </a>
+
+            <a
+                class="btn eliminar"
+                href="{% url 'carros:eliminar' carro.id %}"
+            >
+                🗑️ Eliminar carro
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- CARACTERÍSTICAS -->
+
+    <div class="tarjeta">
+
+        <h2>⚙️ Características</h2>
+
+        <a
+            class="btn agregar"
+            href="{% url 'carros:agregar_caracteristica' carro.id %}"
+        >
+            ➕ Agregar característica
+        </a>
+
+        <br><br>
+
+
+        {% if carro.caracteristica_set.all %}
+
+            {% for caracteristica in carro.caracteristica_set.all %}
+
+                <div class="caracteristica">
+
+                    <div class="texto-caracteristica">
+
+                        {{ caracteristica.caracteristica_text }}
+
+                    </div>
+
+
+                    <div class="botones-caracteristica">
+
+                        <a
+                            class="editar-caracteristica"
+                            href="{% url 'carros:editar_caracteristica' caracteristica.id %}"
+                        >
+                            ✏️ Editar
+                        </a>
+
+                        <a
+                            class="eliminar-caracteristica"
+                            href="{% url 'carros:eliminar_caracteristica' caracteristica.id %}"
+                        >
+                            🗑️ Eliminar
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <p class="sin-caracteristicas">
+                    Este carro todavía no tiene características.
+                </p>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="sin-caracteristicas">
+                Este carro todavía no tiene características.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
 
 </body>
 </html>

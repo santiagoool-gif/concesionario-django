@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar carro</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 20px 50px;
+        }
+
+        .contenedor {
+            max-width: 600px;
+            margin: 80px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #dc2626;
+        }
+
+        .carro {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 25px 0;
+        }
+
+        button {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 13px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #b91c1c;
+        }
+
+        .cancelar {
+            margin-left: 15px;
+            text-decoration: none;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>CONCESIONARIO +</h1>
+</header>
+
+<div class="contenedor">
+
+    <h2>⚠️ Confirmar eliminación</h2>
+
+    <p>
+        ¿Estás seguro de que quieres eliminar este carro?
+    </p>
+
+    <div class="carro">
+        {{ carro.carro_text }}
+    </div>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <button type="submit">
+            🗑️ Sí, eliminar
+        </button>
+
+        <a class="cancelar"
+           href="{% url 'carros:detail' carro.id %}">
+            Cancelar
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>

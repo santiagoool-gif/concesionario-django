@@ -1,28 +1,376 @@
+```html
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Concesionario</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            color: #172033;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: #101827;
+            color: white;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #2f6df6;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-nav {
+            text-decoration: none;
+            color: white;
+            background: #2f6df6;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn-nav:hover {
+            background: #1d56d8;
+        }
+
+        /* CONTENIDO */
+        .container {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            gap: 20px;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            color: #667085;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: #2f6df6;
+            color: white;
+            text-decoration: none;
+            padding: 13px 20px;
+            border-radius: 9px;
+            font-weight: 700;
+        }
+
+        .btn-primary:hover {
+            background: #1d56d8;
+        }
+
+        /* LISTADO */
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .cars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 22px;
+        }
+
+        .car-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(16, 24, 40, 0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .car-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(16, 24, 40, 0.12);
+        }
+
+        .car-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: #eef4ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin-bottom: 18px;
+        }
+
+        .car-name {
+            font-size: 21px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .car-date {
+            color: #667085;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* BOTONES */
+        .card-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-detail {
+            background: #eef2f6;
+            color: #344054;
+        }
+
+        .btn-edit {
+            background: #2f6df6;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #fee4e2;
+            color: #b42318;
+        }
+
+        .btn:hover {
+            opacity: 0.85;
+        }
+
+        /* SIN CARROS */
+        .empty {
+            background: white;
+            padding: 45px;
+            border-radius: 16px;
+            text-align: center;
+            color: #667085;
+            box-shadow: 0 8px 25px rgba(16, 24, 40, 0.06);
+        }
+
+        .empty-icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        /* FOOTER */
+        footer {
+            margin-top: 80px;
+            background: #101827;
+            color: #98a2b3;
+            text-align: center;
+            padding: 25px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 650px) {
+
+            .navbar {
+                padding: 16px 20px;
+            }
+
+            .hero {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .cars-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>Concesionario</h1>
+    <!-- NAVBAR -->
+    <nav class="navbar">
 
-    <h2>Últimos carros registrados</h2>
+        <div class="logo">
+            CONCESIONARIO <span>+</span>
+        </div>
 
-    {% if latest_carro_list %}
+        <div class="nav-actions">
 
-        <ul>
-        {% for carro in latest_carro_list %}
-            <li>{{ carro.carro_text }}</li>
-        {% endfor %}
-        </ul>
+            <a href="{% url 'carros:ia_concesionario' %}" class="btn-nav">
+                Asistente IA
+            </a>
 
-    {% else %}
+            <a href="{% url 'carros:crear' %}" class="btn-nav">
+                + Nuevo vehículo
+            </a>
 
-        <p>No hay carros registrados.</p>
+        </div>
 
-    {% endif %}
+    </nav>
+
+
+    <!-- CONTENIDO -->
+    <main class="container">
+
+        <section class="hero">
+
+            <div>
+                <h1>Vehículos disponibles</h1>
+
+                <p>
+                    Administra los vehículos registrados en tu concesionario.
+                </p>
+            </div>
+
+            <a href="{% url 'carros:crear' %}" class="btn-primary">
+                + Registrar vehículo
+            </a>
+
+        </section>
+
+
+        <h2 class="section-title">
+            Últimos carros registrados
+        </h2>
+
+
+        {% if latest_carro_list %}
+
+            <div class="cars-grid">
+
+                {% for carro in latest_carro_list %}
+
+                    <div class="car-card">
+
+                        <div class="car-icon">
+                            🚗
+                        </div>
+
+                        <div class="car-name">
+                            {{ carro.carro_text }}
+                        </div>
+
+                        <div class="car-date">
+                            Publicado:
+                            {{ carro.pub_date|date:"d/m/Y H:i" }}
+                        </div>
+
+
+                        <div class="card-actions">
+
+                            <!-- VER -->
+                            <a
+                                href="{% url 'carros:detail' carro.id %}"
+                                class="btn btn-detail">
+                                Ver detalles
+                            </a>
+
+
+                            <!-- EDITAR -->
+                            <a
+                                href="{% url 'carros:editar' carro.id %}"
+                                class="btn btn-edit">
+                                Editar
+                            </a>
+
+
+                            <!-- ELIMINAR -->
+                            <a
+                                href="{% url 'carros:eliminar' carro.id %}"
+                                class="btn btn-delete">
+                                Eliminar
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    🚘
+                </div>
+
+                <h3>No hay vehículos registrados</h3>
+
+                <p style="margin-top: 10px;">
+                    Comienza registrando el primer vehículo del concesionario.
+                </p>
+
+                <div style="margin-top: 20px;">
+
+                    <a
+                        href="{% url 'carros:crear' %}"
+                        class="btn-primary">
+                        Registrar primer vehículo
+                    </a>
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        Sistema de Concesionario · Gestión de vehículos
+
+    </footer>
 
 </body>
 </html>
+```

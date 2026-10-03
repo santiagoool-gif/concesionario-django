@@ -1,0 +1,401 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ titulo }} | Concesionario</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            color: #172033;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: #101827;
+            color: white;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #2f6df6;
+        }
+
+        .btn-nav {
+            text-decoration: none;
+            color: white;
+            background: #2f6df6;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn-nav:hover {
+            background: #1d56d8;
+        }
+
+        /* CONTENEDOR */
+        .container {
+            max-width: 850px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #667085;
+            font-size: 16px;
+        }
+
+        /* FORMULARIO */
+        .form-card {
+            background: white;
+            border-radius: 18px;
+            padding: 40px;
+            box-shadow: 0 10px 35px rgba(16, 24, 40, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 9px;
+            color: #172033;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #d0d5dd;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #2f6df6;
+            box-shadow: 0 0 0 3px rgba(47, 109, 246, 0.12);
+        }
+
+        .helptext {
+            display: block;
+            color: #667085;
+            font-size: 13px;
+            margin-top: 7px;
+        }
+
+        .errorlist {
+            list-style: none;
+            color: #d92d20;
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        /* PRECIO */
+        .price-box {
+            position: relative;
+        }
+
+        .price-symbol {
+            position: absolute;
+            left: 15px;
+            top: 14px;
+            font-weight: 700;
+            color: #667085;
+        }
+
+        .price-box input {
+            padding-left: 35px;
+        }
+
+        /* BOTONES */
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            border: none;
+            cursor: pointer;
+            padding: 14px 24px;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #2f6df6;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #1d56d8;
+        }
+
+        .btn-secondary {
+            background: #eef2f6;
+            color: #344054;
+        }
+
+        .btn-secondary:hover {
+            background: #e4e7ec;
+        }
+
+        /* INFO */
+        .info-box {
+            margin-top: 25px;
+            padding: 15px;
+            background: #eef4ff;
+            border-left: 4px solid #2f6df6;
+            border-radius: 8px;
+            color: #344054;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* FOOTER */
+        footer {
+            margin-top: 80px;
+            background: #101827;
+            color: #98a2b3;
+            text-align: center;
+            padding: 25px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 16px 20px;
+            }
+
+            .form-card {
+                padding: 25px 20px;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <div class="logo">
+            CONCESIONARIO <span>+</span>
+        </div>
+
+        <a href="{% url 'carros:index' %}" class="btn-nav">
+            ← Volver
+        </a>
+
+    </nav>
+
+
+    <!-- CONTENIDO -->
+    <main class="container">
+
+        <div class="header">
+
+            <h1>{{ titulo }}</h1>
+
+            {% if "Editar" in titulo %}
+
+                <p>
+                    Actualiza la información del vehículo.
+                </p>
+
+            {% else %}
+
+                <p>
+                    Registra un nuevo vehículo en el concesionario.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="form-card">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                {{ form.non_field_errors }}
+
+
+                <!-- VEHÍCULO -->
+                <div class="form-group">
+
+                    <label for="{{ form.carro_text.id_for_label }}">
+                        Vehículo
+                    </label>
+
+                    {{ form.carro_text.errors }}
+
+                    {{ form.carro_text }}
+
+                    <span class="helptext">
+                        Escribe la marca, modelo y año.
+                        Ejemplo: BMW 320i 2020
+                    </span>
+
+                </div>
+
+
+                <!-- PRECIO -->
+                <div class="form-group">
+
+                    <label for="{{ form.precio.id_for_label }}">
+                        Precio del vehículo
+                    </label>
+
+                    {{ form.precio.errors }}
+
+                    <div class="price-box">
+
+                        <span class="price-symbol">$</span>
+
+                        {{ form.precio }}
+
+                    </div>
+
+                    <span class="helptext">
+                        Ingresa el precio en pesos colombianos.
+                    </span>
+
+                </div>
+
+
+                <!-- FECHA -->
+                <div class="form-group">
+
+                    <label for="{{ form.pub_date.id_for_label }}">
+                        Fecha de publicación
+                    </label>
+
+                    {{ form.pub_date.errors }}
+
+                    {{ form.pub_date }}
+
+                </div>
+
+
+                <!-- INFORMACIÓN -->
+                <div class="info-box">
+
+                    💡 <strong>Información:</strong>
+
+                    {% if "Editar" in titulo %}
+
+                        Los cambios realizados se actualizarán
+                        directamente en la base de datos.
+
+                    {% else %}
+
+                        El vehículo quedará registrado
+                        inmediatamente en el concesionario.
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- BOTONES -->
+                <div class="actions">
+
+                    <a
+                        href="{% url 'carros:index' %}"
+                        class="btn btn-secondary">
+
+                        Cancelar
+
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+
+                        {% if "Editar" in titulo %}
+
+                            Guardar cambios
+
+                        {% else %}
+
+                            Registrar vehículo
+
+                        {% endif %}
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        Sistema de Concesionario · Gestión de vehículos
+
+    </footer>
+
+</body>
+
+</html>
+```
+

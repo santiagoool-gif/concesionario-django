@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar característica</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 20px 50px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .contenedor {
+            max-width: 600px;
+            margin: 80px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #dc2626;
+        }
+
+        .caracteristica {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 25px 0;
+        }
+
+        button {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 13px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #b91c1c;
+        }
+
+        .cancelar {
+            margin-left: 15px;
+            color: #555;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>CONCESIONARIO +</h1>
+</header>
+
+<div class="contenedor">
+
+    <h2>⚠️ Eliminar característica</h2>
+
+    <p>
+        ¿Estás seguro de que quieres eliminar esta característica?
+    </p>
+
+    <div class="caracteristica">
+        {{ caracteristica.caracteristica_text }}
+    </div>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <button type="submit">
+            🗑️ Sí, eliminar
+        </button>
+
+        <a
+            class="cancelar"
+            href="{% url 'carros:detail' caracteristica.carro.id %}"
+        >
+            Cancelar
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>

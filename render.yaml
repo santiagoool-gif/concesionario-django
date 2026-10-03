@@ -1,0 +1,94 @@
+databases:
+  - name: concesionario-db
+    plan: free
+    databaseName: concesionario
+    user: concesionario
+
+services:
+  - type: web
+    name: concesionario-django
+    plan: free
+    runtime: python
+    buildCommand: ./build.sh
+    startCommand: python -m gunicorn concesionario.asgi:application -k uvicorn.workers.UvicornWorker
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: concesionario-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: INTERNAL_API_TOKEN
+        generateValue: true
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.8-flash
+      - key: CARROS_API_URL
+        value: https://concesionario-django.onrender.com/carros/api/carros/
+      - key: NODE_INSERT_URL
+        value: https://ms-carros-insertar.onrender.com
+      - key: NODE_UPDATE_URL
+        value: https://ms-carros-actualizar.onrender.com
+      - key: NODE_DELETE_URL
+        value: https://ms-carros-eliminar.onrender.com
+      - key: READ_PRIMARY_URL
+        value: https://ms-carros-actualizar.onrender.com
+      - key: READ_FALLBACK_URL
+        value: https://ms-carros-eliminar.onrender.com
+
+  - type: web
+    name: ms-carros-insertar
+    plan: free
+    runtime: node
+    rootDir: microservicios_node/insertar
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: "10000"
+      - key: DJANGO_BASE_URL
+        value: https://concesionario-django.onrender.com
+      - key: INTERNAL_API_TOKEN
+        fromService:
+          type: web
+          name: concesionario-django
+          envVarKey: INTERNAL_API_TOKEN
+
+  - type: web
+    name: ms-carros-actualizar
+    plan: free
+    runtime: node
+    rootDir: microservicios_node/actualizar
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: "10000"
+      - key: DJANGO_BASE_URL
+        value: https://concesionario-django.onrender.com
+      - key: INTERNAL_API_TOKEN
+        fromService:
+          type: web
+          name: concesionario-django
+          envVarKey: INTERNAL_API_TOKEN
+
+  - type: web
+    name: ms-carros-eliminar
+    plan: free
+    runtime: node
+    rootDir: microservicios_node/eliminar
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: "10000"
+      - key: DJANGO_BASE_URL
+        value: https://concesionario-django.onrender.com
+      - key: INTERNAL_API_TOKEN
+        fromService:
+          type: web
+          name: concesionario-django
+          envVarKey: INTERNAL_API_TOKEN

@@ -8,33 +8,33 @@ load_dotenv()
 app = Flask(__name__)
 
 MONGO_URI = os.getenv("MONGO_URI")
-
 cliente = MongoClient(MONGO_URI)
-print(cliente.list_database_names())
-
 db = cliente["pokedex"]
 coleccion_pokemon = db["pokemon"]
 
 
-@app.route("/pokemon")
+@app.route("/pokemon", methods=["GET"])
 def pokemon():
     lista_pokemon = list(coleccion_pokemon.find({}, {"_id": 0}))
     return jsonify(lista_pokemon)
 
 
-@app.route("/pokemon/<nombre>")
+@app.route("/pokemon/<nombre>", methods=["GET"])
 def pokemon_nombre(nombre):
     pokemon = coleccion_pokemon.find_one(
-        {"nombre": nombre},
-        {"_id": 0}
+        {"nombre": nombre.capitalize()},
+        {"_id": 0},
     )
 
     if pokemon is None:
-        return jsonify({
-            "error": "Pokemon no esta"
-        }), 404
+        return jsonify({"error": "Pokemon no encontrado"}), 404
 
     return jsonify(pokemon)
+
+
+@app.route("/health", methods=["GET"])
+def health():
+    return jsonify({"servicio": "microservicio-pokemon", "estado": "ok"})
 
 
 if __name__ == "__main__":
