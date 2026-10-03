@@ -376,19 +376,26 @@ def ia_concesionario(request):
         pregunta = request.POST.get("pregunta", "").strip()
 
         if pregunta:
+            # 1. Consultar el inventario
             try:
-                api_response = requests.get(CARROS_API_URL, timeout=8)
+                api_response = requests.get(
+                    CARROS_API_URL,
+                    timeout=8
+                )
                 api_response.raise_for_status()
                 informacion_carros = api_response.json()
+
             except requests.RequestException:
                 informacion_carros = _datos_carros()
                 fuente_datos = "respaldo-local-django"
 
+            # 2. Preparar la información para la IA
             contexto = f"""
 Eres el asistente virtual de un concesionario de vehículos.
 
 Usa exclusivamente los datos del inventario proporcionado a continuación
 para responder preguntas sobre vehículos, precios y características.
+
 No inventes precios ni características.
 
 INVENTARIO ACTUAL:
@@ -398,24 +405,49 @@ PREGUNTA DEL USUARIO:
 {pregunta}
 
 Responde en español de forma clara, útil y profesional.
-Si el vehículo o dato solicitado no aparece en el inventario, dilo claramente.
+
+Si el vehículo o dato solicitado no aparece en el inventario,
+dilo claramente.
 """
 
-            try:
-                response = client.models.generate_content(
-                    model=GEMINI_MODEL,
-                    contents=contexto,
+            # 3. Intentar diferentes modelos de IA
+            modelos = [
+                GEMINI_MODEL,
+                "gemini-3.7-flash",
+                "gemini-3.5-flash",
+            ]
+
+            respuesta = None
+
+            for modelo in modelos:
+                try:
+                    response = client.models.generate_content(
+                        model=modelo,
+                        contents=contexto,
+                    )
+
+                    respuesta = response.text
+                    break
+
+                except Exception:
+                    continue
+
+            # 4. Si todos los modelos fallan
+            if respuesta is None:
+                respuesta = (
+                    "La inteligencia artificial está temporalmente "
+                    "saturada. Intenta nuevamente en unos segundos."
                 )
-                respuesta = response.text
-            except Exception as exc:
-                respuesta = f"No fue posible consultar la IA en este momento: {exc}"
 
-    return render(request, "carros/asistente.html", {
-        "respuesta": respuesta,
-        "pregunta": pregunta,
-        "fuente_datos": fuente_datos,
-    })
-
+    return render(
+        request,
+        "carros/asistente.html",
+        {
+            "respuesta": respuesta,
+            "pregunta": pregunta,
+            "fuente_datos": fuente_datos,
+        }
+    )
 
 # =========================================================
 # VISTAS GENERICAS DE DJANGO
